@@ -1,0 +1,213 @@
+{ config, lib, pkgs, ... }:
+
+{
+  imports =
+    [
+      nixos/home-manager.nix
+      # Include the results of the hardware scan.
+      ./hardware-configuration.nix
+    ];
+
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+  home-manager.users.admin = import ./home.nix;
+
+  # Use the extlinux boot loader. (NixOS wants to enable GRUB by default)
+  boot.loader.grub.enable = false;
+  # Enables the generation of /boot/extlinux/extlinux.conf
+  boot.loader.generic-extlinux-compatible.enable = true;
+
+  # networking.hostName = "nixos"; # Define your hostname.
+  # Pick only one of the below networking options.
+  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+
+  # Set your time zone.
+  time.timeZone = "Europe/Berlin";
+
+  users.users.admin = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" "networkmanager" "i2c" "gpio" ]; # Enable ‘sudo’ for the user.
+    openssh.authorizedKeys.keys = [ "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCsYP1MDb2p9/5fsH0J6hFUXOr9xtki/w7lhDqgx63iY0yAdPPzxoYV+bhGtoijZLwyVBnvrQDF1IZy7aj0Y6t75PjW4v7p/y+xxr1SU33fLei+OqyIptY+/sQv44dKSoMDIuhmkIj+vZfY4/+93no6z7H4ONRlybQ8+4qOMynGo8HJU6G6Iw4X1sLMMCOVZOiThJ5D+QlCvB3qp3d3JWRBP3vbMs58iTGu2zWxw3fFeJDLgpQ5031qzlI+EgZxrVusIq81MetDlb8QmUMACdm5g2t9ZRCbkPgWTSpzIr9eatQ0WgjX76HNhlLNXjeZrwj9UZcATCXB5EQrnun5UGMn7882vUf8eyT8bRa3o+Fmc36wv2cP2WlUEKysg+Z7cyRbfPtw/f6ZFNQ4dJOZ6vmeQsdw+54CWBL4JCnM5Y80524UKknMD5j5s2hgK3UYIGkZS8nwY9mdTFXYQeRYWqGOO4DNjyh0s1jYTz9UhT6ez/Wftvnv9XwrRTXATIeMGwlZTv+lquIiiMzxvFQbQaulIb8CQ6xdVO69fUupBMBcp2E8axeodYQVrIzr70Iu9y2JE/pZTOzMmZgSkYZeBOVCNKdXCdaFcAxS5ClUEoBeuEHAWyl6iQhiBpQtaRxhqN5tFzclZoIPDNWJvT7vbHLhHrGqvzJf1+f8YNZntmWpxQ== cardno:000615209828" ];
+  };
+  # Do not require password
+  security.sudo.wheelNeedsPassword = false;
+
+  # Define extra groups for home assistant user (hass)
+  users.users.hass.extraGroups = [ "i2c" "gpio" ];
+
+  # GPIO
+  # setup group manually
+  users.groups = {
+    gpio = { };
+  };
+  # configure udev rules
+  services.udev.extraRules = ''
+    SUBSYSTEM=="gpio", GROUP="gpio", MODE="0660"
+  '';
+
+  # I2C
+  # enable to create group and udev rules automatically
+  hardware.i2c.enable = true;
+
+  # Grant access to systemd 
+  # TODO make this more generic
+  systemd.services.home-assistant.serviceConfig.DeviceAllow = [
+    # for GPIO
+    "/dev/gpiochip0 rw"
+    "/dev/gpiochip1 rw"
+    # for I2C
+    "/dev/i2c-0 rw"
+    "/dev/i2c-1 rw"
+    "/dev/i2c-2 rw"
+    "/dev/i2c-3 rw"
+  ];
+
+  # List packages installed in system profile.
+  environment.systemPackages = with pkgs; [
+    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    wget
+    git
+    htop
+    owntracks-recorder
+    systemctl-tui
+    fzf
+  ];
+
+  # List services that you want to enable:
+
+  # Enable the OpenSSH daemon.
+  services.openssh.enable = true;
+
+  # Enable tailscale
+  services.tailscale.enable = true;
+
+  # Enable home assistant
+  services.home-assistant = {
+    enable = true;
+    extraPackages = python3Packages: with python3Packages; [
+      # postgresql support
+      # psycopg2
+      # numpy
+      # aiodhcpwatcher
+      # aiodiscover
+    ];
+    customComponents = with pkgs.home-assistant-custom-components; [
+      gpio
+      (pkgs.callPackage packages/mcp23017.nix {})
+    ];
+    extraComponents = [
+      "default_config"
+      "met"
+      "esphome"
+      "mqtt"
+    ];
+    config = {
+      homeassistant = {
+        name = "Ruby";
+        unit_system = "metric";
+        latitude = 32.87336;
+        longitude = 117.22743;
+        elevation = 430;
+        currency = "EUR";
+        country = "CH";
+        time_zone= "Europe/Berlin";
+      };
+      frontend = {
+        themes = "!include_dir_merge_named themes";
+      };
+      recorder = {
+        commit_interval = 30;
+      };
+      switch = [
+        {
+          platform = "mcp23017";
+          i2c_address = 32; # TODO this is actually the hex address "0x20". maybe there is a way to convert in Nix lang
+          pins = {
+            "8" = "switch_8";
+            "9" = "switch_9";
+            "10" = "switch_10";
+            "11" = "switch_11";
+            "12" = "switch_12";
+            "13" = "switch_13";
+            "14" = "switch_14";
+            "15" = "switch_15";
+          };
+        }
+        #{
+        #  platform = "gpio";
+        #  switches = [
+        #    { port = 10; name = "Demo Switch 10"; unique_id = "demo_switch_port_10"; invert_logic = true; }
+        #    { port = 27; name = "Demo Switch 27"; unique_id = "demo_switch_port_27"; invert_logic = true; }
+        #    { port = 17; name = "Demo Switch 17"; unique_id = "demo_switch_port_17"; invert_logic = true; }
+        #    { port = 9; name = "Demo Switch 9"; unique_id = "demo_switch_port_9"; invert_logic = true; }
+        #    { port = 11; name = "Demo Switch 11"; unique_id = "demo_switch_port_11"; invert_logic = true; }
+        #    { port = 5; name = "Demo Switch 5"; unique_id = "demo_switch_port_5"; invert_logic = true; }
+        #  ];
+        #}
+      ];
+    };
+  };
+  services.zigbee2mqtt.enable = true;
+  services.mosquitto = {
+    enable = true;
+    listeners = [
+      {
+        port = 1883;
+        acl = [ "pattern readwrite #" ];
+        omitPasswordAuth = true;
+        settings.allow_anonymous = true;
+      }
+    ];
+  };
+  services.node-red.enable = true;
+  services.cgminer.enable = false;
+
+  # owntracks
+  users.users.owntracks.isNormalUser = true;
+  systemd.services.otrecorder = {
+    description = "OwnTracks Recorder";
+    wants = [ "network-online.target" ];
+    after = [ "network-online.target" ];
+    serviceConfig = {
+      Type      = "simple";
+      WorkingDirectory = "/";
+      ExecStartPre = "${pkgs.coreutils-full}/bin/sleep 3";
+      User      = "owntracks";
+      ExecStart = "${pkgs.owntracks-recorder}/bin/ot-recorder owntracks/#";
+    };
+    wantedBy = [ "multi-user.target" ];
+  };
+
+  # Open ports in the firewall.
+  networking.firewall = {
+    enable = true;
+    allowedTCPPorts = [ 1883 ];
+  };
+
+  # Copy the NixOS configuration file and link it from the resulting system
+  # (/run/current-system/configuration.nix). This is useful in case you
+  # accidentally delete configuration.nix.
+  # system.copySystemConfiguration = true;
+
+  # This option defines the first version of NixOS you have installed on this particular machine,
+  # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
+  #
+  # Most users should NEVER change this value after the initial install, for any reason,
+  # even if you've upgraded your system to a new NixOS release.
+  #
+  # This value does NOT affect the Nixpkgs version your packages and OS are pulled from,
+  # so changing it will NOT upgrade your system - see https://nixos.org/manual/nixos/stable/#sec-upgrading for how
+  # to actually do that.
+  #
+  # This value being lower than the current NixOS release does NOT mean your system is
+  # out of date, out of support, or vulnerable.
+  #
+  # Do NOT change this value unless you have manually inspected all the changes it would make to your configuration,
+  # and migrated your data accordingly.
+  #
+  # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
+  system.stateVersion = "24.11"; # Did you read the comment?
+
+}
+
