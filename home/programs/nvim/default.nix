@@ -7,15 +7,15 @@
     enable = true;
     vimAlias = true;
     defaultEditor = true;
-#    colorschemes = {
-#      nord = {
-#        enable = true;
-#        settings = {
-#          borders = true;
-#          contrast = true;
-#        };
-#      };
-#    };
+    colorschemes = {
+      nord = {
+        enable = true;
+        settings = {
+          borders = true;
+          contrast = true;
+        };
+      };
+    };
     clipboard.register = "unnamedplus";
     globals = {
       mapleader = " ";

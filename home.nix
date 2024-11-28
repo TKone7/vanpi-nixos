@@ -3,9 +3,9 @@
   imports = [
     # Programs
     home/programs/nvim
-    #home/programs/shell
+    home/programs/shell
+    home/programs/lazygit
     #home/programs/yazi
-
   ];
 
   home = {
@@ -23,7 +23,7 @@
       push.autoSetupRemote = true;
       pull.rebase = true;
       core.editor = "nvim";
-      commit.gpgsign = true;
+      # commit.gpgsign = true;
     };
   };
 
