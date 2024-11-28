@@ -1,0 +1,50 @@
+esphome:
+  name: humidity-sensor
+  friendly_name: humidity-sensor
+
+esp8266:
+  board: d1_mini
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: !secret humidity_sensor_api_key
+
+ota:
+  platform: esphome
+  password: !secret humidity_sensor_ota_password
+
+wifi:
+  ssid: !secret rutx_wifi_ssid
+  password: !secret rutx_wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Humidity-Sensor Fallback Hotspot"
+    password: !secret ap_fallback_password
+
+captive_portal:
+    
+
+sensor:
+  - platform: dht
+    pin: D2
+    temperature:
+      name: "Rooftop Temperature"
+      id: rooftop_temperature
+    humidity:
+      name: "Rooftop Humidity"
+      id: rooftop_humidity
+    update_interval: 10s
+
+  - platform: template
+    name: "Dew Point"
+    lambda: |-
+      return (243.5*(log(id(rooftop_humidity).state/100)+((17.67*id(rooftop_temperature).state)/
+      (243.5+id(rooftop_temperature).state)))/(17.67-log(id(rooftop_humidity).state/100)-
+      ((17.67*id(rooftop_temperature).state)/(243.5+id(rooftop_temperature).state))));
+    unit_of_measurement: °C
+    icon: 'mdi:thermometer-alert'

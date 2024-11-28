@@ -1,0 +1,29 @@
+substitutions:
+  # Settings - Editable values
+  device_name: "ns-panel"
+  friendly_name: "Smart Van Panel"
+  wifi_ssid: !secret rutx_wifi_ssid
+  wifi_password: !secret rutx_wifi_password
+  # nextion_update_url: "http://homeassistant.local:8123/local/nspanel_eu.tft"  # Optional
+  # Add-on configuration (if needed)
+  # heater_relay: "1"  # Possible values: "1" or "2"
+
+# Customization area
+##### My customization - Start #####
+##### My customization - End #####
+
+# Core and optional configurations
+packages:
+  remote_package:
+    url: https://github.com/Blackymas/NSPanel_HA_Blueprint
+    ref: main
+    refresh: 300s
+    files:
+      - nspanel_esphome.yaml # Basic package
+      # Optional advanced and add-on configurations
+      # - esphome/nspanel_esphome_advanced.yaml
+      # - esphome/nspanel_esphome_addon_ble_tracker.yaml
+      # - esphome/nspanel_esphome_addon_bluetooth_proxy.yaml
+      # - esphome/nspanel_esphome_addon_climate_cool.yaml
+      - esphome/nspanel_esphome_addon_climate_heat.yaml
+      # - esphome/nspanel_esphome_addon_climate_dual.yaml

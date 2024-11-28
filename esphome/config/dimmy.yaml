@@ -1,0 +1,103 @@
+esphome:
+  name: dimmy
+  friendly_name: "Light Dimming Station"
+
+esp8266:
+  board: d1_mini
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: !secret dimmy_api_key
+
+ota:
+  platform: esphome
+  password: !secret dimmy_ota_password
+
+wifi:
+  networks:
+    - ssid: !secret wifi_ssid
+      password: !secret wifi_password
+    - ssid: !secret rutx_wifi_ssid
+      password: !secret rutx_wifi_password
+  manual_ip:
+    # Set this to the IP of the ESP
+    static_ip: 192.168.1.116
+    # Set this to the IP address of the router. Often ends with .1
+    gateway: 192.168.1.1
+    # The subnet of the network. 255.255.255.0 works for most home networks.
+    subnet: 255.255.255.0
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Dimmy Fallback Hotspot"
+    password: !secret ap_fallback_password
+
+captive_portal:
+    
+#dallas:
+#  - pin: D4
+
+one_wire:
+  - platform: gpio
+    pin: D4
+
+sensor:
+  - platform: dallas_temp
+    name: "Dimmy Temperature"
+
+i2c:
+
+pca9685:
+  frequency: 200
+  address: 0x55
+
+output:
+  - platform: pca9685
+    channel: 0
+    id: pwm01
+  - platform: pca9685
+    channel: 1
+    id: pwm02
+  - platform: pca9685
+    channel: 2
+    id: pwm03
+  - platform: pca9685
+    channel: 3
+    id: pwm04
+  - platform: pca9685
+    channel: 4
+    id: pwm05
+  - platform: pca9685
+    channel: 5
+    id: pwm06
+  - platform: pca9685
+    channel: 6
+    id: pwm07
+    
+# lights
+light:
+  - platform: monochromatic
+    name: "Main Lights"
+    output: pwm01
+  - platform: monochromatic
+    name: "Kitchen Lights"
+    output: pwm02
+  - platform: monochromatic
+    name: "Shower Lights"
+    output: pwm03
+  - platform: monochromatic
+    name: "Passenger Lights"
+    output: pwm04
+  - platform: monochromatic
+    name: "Bed Lights"
+    output: pwm05
+  - platform: monochromatic
+    name: "Other Lights #1"
+    output: pwm06
+  - platform: monochromatic
+    name: "Other Lights #2"
+    output: pwm07
