@@ -1,4 +1,9 @@
-{ pkgs, ... }: {
+{ pkgs, ... }: 
+{
+  imports = [
+    ./dashboards
+  ];
+
   services.home-assistant = {
     enable = true;
     openFirewall = true;
