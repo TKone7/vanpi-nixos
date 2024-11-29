@@ -3,16 +3,20 @@
 buildHomeAssistantComponent rec {
   # use fork for now because the bus is not configurable and set to 1 by default
   # we need it to be 3 however
-  owner = "TKone7";
+  owner = "jpcornil-git";
   domain = "mcp23017";
   version = "v1.2.4";
 
   src = fetchFromGitHub {
     owner = owner;
     repo = "HA-mcp23017";
-    rev = "e4aae5c17b82c1b396209ddb0329459dcea52f80";
-    sha256 = "sha256-6FLFgzq+5wpfzL/J7igM8pnrdueyUYDmGU7/rTlEZ/8=";
+    rev = "${version}";
+    sha256 = "sha256-kLLfAzyxu91x/081tSAetRuoNXlAHdvCQdCWIQJMaKg=";
   };
+
+  postPatch = ''
+    sed -i 's/DEFAULT_I2C_BUS = 1/DEFAULT_I2C_BUS = 3/g' custom_components/mcp23017/const.py
+  '';
 
   propagatedBuildInputs = [
     pkgs.python312Packages.smbus2
