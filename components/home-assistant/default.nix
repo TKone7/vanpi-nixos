@@ -1,6 +1,7 @@
 { pkgs, ... }: {
   services.home-assistant = {
     enable = true;
+    openFirewall = true;
     extraPackages = python3Packages: with python3Packages; [
       # postgresql support
       # psycopg2
@@ -17,8 +18,10 @@
       "met"
       "esphome"
       "mqtt"
+      "mobile_app"
     ];
     config = {
+      mobile_app = {};
       homeassistant = {
         name = "Ruby";
         unit_system = "metric";
@@ -28,6 +31,16 @@
         currency = "EUR";
         country = "CH";
         time_zone= "Europe/Berlin";
+        # Tried to disable auth for the API, but does not seem to work
+        # auth_providers = [
+        # {
+        #   type = "homeassistant";
+        # }
+        # {
+        #   type = "trusted_networks";
+        #     trusted_networks = [ "127.0.0.0/8" ];
+        #   }
+        # ];
       };
       frontend = {
         themes = "!include_dir_merge_named themes";
