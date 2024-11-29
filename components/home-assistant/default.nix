@@ -59,6 +59,33 @@
       owntracks = {
         mqtt_topic = "owntracks/#";
       };
+      "automation manual" = [
+        {
+          alias = "update ha location every hour";
+          trigger = {
+            platform = "time_pattern";
+            hours = "*";
+            minutes = "10";
+          };
+          action = {
+            action = "script.update_ha_location";
+          };
+        }
+      ];
+      script = {
+        update_ha_location = {
+          description = "Updating in regular interval the home GPS location based on owntracks data";
+          sequence = [
+            {
+              action = "homeassistant.set_location";
+              data_template = {
+                latitude = "{{ state_attr('device_tracker.vanpi_rudy', 'latitude') }}";
+                longitude = "{{ state_attr('device_tracker.vanpi_rudy', 'longitude') }}";
+              };
+            }
+          ];
+        };
+      };
       switch = [
         {
           platform = "mcp23017";
