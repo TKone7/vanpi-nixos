@@ -24,6 +24,9 @@
       "esphome"
       "mqtt"
       "mobile_app"
+      "script"
+      "automation"
+      "lovelace"
     ];
     config = {
       mobile_app = {};
@@ -52,6 +55,9 @@
       };
       recorder = {
         commit_interval = 30;
+      };
+      owntracks = {
+        mqtt_topic = "owntracks/#";
       };
       switch = [
         {
