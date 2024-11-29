@@ -8,6 +8,7 @@
       components/mosquitto
       components/home-assistant
       components/owntracks
+      components/nodered
 
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
@@ -89,7 +90,8 @@
 
   # Enable home assistant
   services.zigbee2mqtt.enable = true;
-  services.node-red.enable = true;
+
+
   services.cgminer.enable = false;
 
   # Copy the NixOS configuration file and link it from the resulting system
