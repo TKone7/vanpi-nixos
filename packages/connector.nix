@@ -44,6 +44,7 @@ buildNpmPackage rec {
 
   postPatch = ''
     sed -i "s/const CONFIG_FILE = '.\/config\/config.yaml'/const CONFIG_FILE = process.env.CONFIG_PATH/g" app.js
+    sed -i "s/'.\/debug.log'/process.env.LOG_FILE/g" app.js
   '';
 
   meta = {
