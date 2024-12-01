@@ -1,7 +1,7 @@
 {
   imports =
     [
-      # ./tmux.nix
+      ./tmux.nix
       ./bash.nix
       ./fzf.nix
     ];
