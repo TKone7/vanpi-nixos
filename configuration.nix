@@ -117,10 +117,6 @@
   # Enable tailscale
   services.tailscale.enable = true;
 
-  # Enable home assistant
-  services.zigbee2mqtt.enable = true;
-
-
   services.cgminer.enable = false;
 
   # Copy the NixOS configuration file and link it from the resulting system

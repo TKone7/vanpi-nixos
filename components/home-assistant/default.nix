@@ -2,6 +2,7 @@
 {
   imports = [
     ./dashboards
+    ./light-switch
   ];
 
   services.home-assistant = {
@@ -27,6 +28,7 @@
       "script"
       "automation"
       "lovelace"
+      "zha"
     ];
     config = {
       mobile_app = {};
