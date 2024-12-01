@@ -3,6 +3,7 @@
   imports = [
     ./dashboards
     ./light-switch
+    ./heater
   ];
 
   services.home-assistant = {

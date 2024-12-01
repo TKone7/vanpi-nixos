@@ -28,6 +28,11 @@
                 entity = "weather.forecast_ruby";
                 forecast_type = "daily";
               }
+              {
+                type = "thermostat";
+                entity = "climate.van_thermostat";
+                features = [ { type = "climate-hvac-modes"; } ];
+              }
             ];
           }
           {
@@ -50,6 +55,43 @@
                   "switch.switch_7"
                   "switch.switch_8"
                 ];
+              }
+            ];
+          }
+          {
+            type = "grid";
+            cards = [
+              {
+                type = "heading";
+                heading = "Resources";
+                heading_style = "title";
+              }
+              {
+                type = "gauge";
+                entity = "sensor.analogsensor_tank_2";
+                name = "Fresh Water";
+                unit = "%";
+                needle = false;
+                grid_options = {
+                  columns = 6;
+                  rows = "auto";
+                };
+              }
+              {
+                type = "gauge";
+                entity = "sensor.analogsensor_tank_1";
+                name = "Grey Water";
+                unit = "%";
+                needle = false;
+                grid_options = {
+                  columns = 6;
+                  rows = "auto";
+                };
+                severity = {
+                  green = 0;
+                  yellow = 70;
+                  red = 90;
+                };
               }
             ];
           }
