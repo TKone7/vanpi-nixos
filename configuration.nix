@@ -3,12 +3,12 @@
 {
   imports =
     [
-      nixos/home-manager.nix
-      components/connector
-      components/mosquitto
-      components/home-assistant
-      components/owntracks
-      components/nodered
+      ./nixos/home-manager.nix
+      ./components/connector
+      ./components/mosquitto
+      ./components/home-assistant
+      ./components/owntracks
+      ./components/nodered
 
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
@@ -22,6 +22,34 @@
   boot.loader.grub.enable = false;
   # Enables the generation of /boot/extlinux/extlinux.conf
   boot.loader.generic-extlinux-compatible.enable = true;
+  # enable one-wire interface
+  boot.kernelModules = [ "w1-gpio" ];
+  hardware.deviceTree = {
+    enable = true;
+    filter = "*rpi-4-*.dtb";
+    overlays = [
+      {
+        name = "w1-gpio";
+        dtboFile = "${pkgs.device-tree_rpi.overlays}/w1-gpio.dtbo";
+      }
+    ];
+  };
+  # raspberry-pi-nix.board = "bcm2711";
+  # raspberry-pi-nix.uboot.enable = true;
+  # hardware = {
+  #   raspberry-pi = {
+  #     config = {
+  #       all = {
+  #         dt-overlays = {
+  #           w1-gpio = {
+  #             enable = true;
+  #             params = { };
+  #           };
+  #         };
+  #       };
+  #     };
+  #   };
+  # };
 
   # networking.hostName = "nixos"; # Define your hostname.
   # Pick only one of the below networking options.
@@ -78,6 +106,7 @@
     owntracks-recorder
     systemctl-tui
     fzf
+    libraspberrypi
   ];
 
   # List services that you want to enable:
