@@ -10,19 +10,37 @@ let
       support:
       - homeassistant
       devices:
-      - name: Temperatursensor
-        id: temperatursensor
-        class: DS18B20
-        interval: 5000
+      - name: Analogsensor
+        id: analogsensor
+        class: ADS1115
+        connection:
+          type: i2c
+          bus: 3
+        interval: 3000
+        values:
+        - name: 'Tank 1'
+          measure: 0+GND
+          min: 300
+          max: 19000
+          scale: 100
+          unit: "%"
+        - name: 'Tank 2'
+          measure: 1+GND
+          min: 300
+          max: 19000
+          scale: 100
+          unit: "%"
+      - name: Dieselheizung
+        id: dieselheizung
+        class: Autoterm_Air_2D
+        connection:
+          type: serial
+          port: "/dev/serial/by-id/usb-FTDI_FT232R_USB_UART_ABSCDQW2-if00-port0"
     '';
-    # - name: Dieselheizung
-    # id: dieselheizung
-    # class: Autoterm_Air_2D
-    # subscribe:
-    # temperature_current: connector/device/temperatursensor/28-3c5fe38162b6/state
-    # connection:
-    # type: serial
-    # port: "/dev/serial/by-id/usb-FTDI_FT232R_USB_UART_ABSCDQW2-if00-port0"
+    # - name: Temperatursensor
+    # id: temperatursensor
+    # class: DS18B20
+    # interval: 5000
   };
 in {
   # users.users.connector.isSystemUser = true;
