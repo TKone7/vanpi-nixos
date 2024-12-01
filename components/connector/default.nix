@@ -36,6 +36,13 @@ let
         connection:
           type: serial
           port: "/dev/serial/by-id/usb-FTDI_FT232R_USB_UART_ABSCDQW2-if00-port0"
+      - name: Bewegungssensor
+        id: bewegungssensor
+        class: MPU_6050
+        connection:
+          type: i2c
+          bus: 3
+          address: 0x69
     '';
     # - name: Temperatursensor
     # id: temperatursensor
