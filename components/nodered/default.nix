@@ -48,4 +48,8 @@ in
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
     "node-red-contrib-grpc"
   ];
+  networking.firewall = {
+    # running NMEA server endpoint
+    allowedTCPPorts = [ 8500 ];
+  };
 }
