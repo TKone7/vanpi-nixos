@@ -1,9 +1,13 @@
+{ pkgs, ... }:
 {
   imports = [
     ./test.nix
   ];
 
   services.home-assistant = {
+    customLovelaceModules = [
+      (pkgs.callPackage ../../../packages/lovelace-more-info-card.nix {})
+    ];
     lovelaceConfig = {
       title = "My Awesome Van";
       views = [{
@@ -29,9 +33,29 @@
                 forecast_type = "daily";
               }
               {
+                type = "heading";
+                heading = "Climate";
+                heading_style = "title";
+                badges = [
+                  {
+                    type = "entity";
+                    entity = "sensor.dimmy_dimmy_temperature";
+                  }
+                  {
+                    type = "entity";
+                    entity = "sensor.ns_panel_temperature";
+                  }
+                ];
+              }
+              {
                 type = "thermostat";
                 entity = "climate.van_thermostat";
                 features = [ { type = "climate-hvac-modes"; } ];
+              }
+              {
+                type = "custom:more-info-card";
+                entity = "fan.maxxair_control_living_room_fan";
+                title = "MaxxAir Fan";
               }
             ];
           }
