@@ -90,6 +90,19 @@
           ];
         };
       };
+      light = [
+        {
+          platform = "group";
+          name = "All lights";
+          entities = [
+            "light.dimmy_passenger_lights"
+            "light.dimmy_main_lights"
+            "light.dimmy_kitchen_lights"
+            "light.dimmy_shower_lights"
+            "light.dimmy_bed_lights"
+          ];
+        }
+      ];
       switch = [
         {
           platform = "mcp23017";
