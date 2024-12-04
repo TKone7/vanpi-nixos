@@ -4,6 +4,7 @@
     ./dashboards
     ./light-switch
     ./heater
+    ./mempool
   ];
 
   services.home-assistant = {
