@@ -43,6 +43,12 @@ let
           type: i2c
           bus: 3
           address: 0x69
+      - name: Solar-Laderegler
+        id: solar_charge
+        class: Ective_DSC
+        connection:
+          type: serial
+          port: "/dev/serial/by-id/usb-Silicon_Labs_CP2102_USB_to_UART_Bridge_Controller_0001-if00-port0"
     '';
     # - name: Temperatursensor
     # id: temperatursensor
