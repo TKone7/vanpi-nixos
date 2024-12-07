@@ -1,7 +1,27 @@
 { pkgs, ... }:
+let
+  user = "owntracks";
+  group = "owntracks";
+  userDir = "/var/lib/owntracks";
+in
 {
-  # owntracks recorder
-  users.users.owntracks.isNormalUser = true;
+  home-manager.users."${user}" = {
+    programs.home-manager.enable = true;
+
+    home = {
+      username = user;
+      homeDirectory = userDir;
+      stateVersion = "24.05";
+    };
+
+  };
+  users.groups."${user}" = {};
+  users.users."${user}" = {
+    home = userDir;
+    group = group;
+    isSystemUser = true;
+    createHome = true;
+  };
   systemd.services.otrecorder = {
     description = "OwnTracks Recorder";
     wants = [ "network-online.target" ];
@@ -10,9 +30,12 @@
       Type      = "simple";
       WorkingDirectory = "/";
       ExecStartPre = "${pkgs.coreutils-full}/bin/sleep 3";
-      User      = "owntracks";
-      ExecStart = "${pkgs.owntracks-recorder}/bin/ot-recorder owntracks/#";
+      User      = user;
+      ExecStart = "${pkgs.owntracks-recorder}/bin/ot-recorder --doc-root ${userDir}/recorder/htdocs --viewsdir ${userDir}/recorder/htdocs/views --initialize owntracks/#";
     };
     wantedBy = [ "multi-user.target" ];
   };
+  environment.etc."default/ot-recorder".text = ''
+    OTR_STORAGEDIR="${userDir}/recorder/store"
+  '';
 }
