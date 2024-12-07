@@ -1,11 +1,27 @@
 { pkgs, ... }: 
+let
+  user = "hass";
+  group = "hass";
+  userDir = "/var/lib/hass";
+in
 {
   imports = [
     ./dashboards
     ./light-switch
     ./heater
     ./mempool
+    ./ns-panel
   ];
+
+  home-manager.users."${user}" = {
+    programs.home-manager.enable = true;
+
+    home = {
+      username = user;
+      homeDirectory = userDir;
+      stateVersion = "24.05";
+    };
+  };
 
   services.home-assistant = {
     enable = true;
