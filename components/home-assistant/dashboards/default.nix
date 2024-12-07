@@ -24,6 +24,161 @@
             cards = [
               {
                 type = "heading";
+                heading = "Lights";
+                heading_style = "title";
+              }
+              {
+                type = "tile";
+                entity = "light.all_lights";
+                name = "All lights";
+                features = [ { type = "light-brightness"; }];
+              }
+              {
+                type = "tile";
+                entity = "light.dimmy_main_lights";
+                name = "Overhead";
+                features = [ { type = "light-brightness"; }];
+              }
+              {
+                type = "tile";
+                entity = "light.dimmy_passenger_lights";
+                name = "Passenger";
+                features = [ { type = "light-brightness"; }];
+              }
+              {
+                type = "tile";
+                entity = "light.dimmy_shower_lights";
+                name = "Shower";
+                features = [ { type = "light-brightness"; }];
+              }
+              {
+                type = "tile";
+                entity = "light.dimmy_kitchen_lights";
+                name = "Kitchen";
+                features = [ { type = "light-brightness"; }];
+              }
+              {
+                type = "tile";
+                entity = "light.dimmy_bed_lights";
+                name = "Bed";
+                features = [ { type = "light-brightness"; }];
+              }
+              {
+                type = "heading";
+                heading = "Switches";
+                heading_style = "title";
+              }
+              {
+                type = "button";
+                name = "Open walve";
+                icon = "mdi:water-check";
+                show_name = true;
+                show_icon = true;
+                tap_action.action = "toggle";
+                entity = "switch.switch_1";
+                grid_options = {
+                  columns = 3;
+                  rows = 2;
+                };
+              }
+              {
+                type = "button";
+                name = "Close walve";
+                icon = "mdi:water-off-outline";
+                show_name = true;
+                show_icon = true;
+                tap_action.action = "toggle";
+                entity = "switch.switch_2";
+                grid_options = {
+                  columns = 3;
+                  rows = 2;
+                };
+              }
+              {
+                type = "button";
+                name = "Underground camera";
+                icon = "mdi:webcam";
+                show_name = true;
+                show_icon = true;
+                tap_action.action = "toggle";
+                entity = "switch.switch_3";
+                grid_options = {
+                  columns = 3;
+                  rows = 2;
+                };
+              }
+              {
+                type = "button";
+                name = "Fridge";
+                icon = "mdi:fridge-industrial";
+                show_name = true;
+                show_icon = true;
+                tap_action.action = "toggle";
+                entity = "switch.switch_4";
+                grid_options = {
+                  columns = 3;
+                  rows = 2;
+                };
+              }
+              {
+                type = "button";
+                name = "Inverter";
+                icon = "mdi:power-plug-outline";
+                show_name = true;
+                show_icon = true;
+                tap_action.action = "toggle";
+                entity = "switch.switch_5";
+                grid_options = {
+                  columns = 3;
+                  rows = 2;
+                };
+              }
+              {
+                type = "button";
+                name = "Pump";
+                icon = "mdi:water-pump";
+                show_name = true;
+                show_icon = true;
+                tap_action.action = "toggle";
+                entity = "switch.switch_6";
+                grid_options = {
+                  columns = 3;
+                  rows = 2;
+                };
+              }
+              {
+                type = "button";
+                name = "Boiler";
+                icon = "mdi:water-thermometer";
+                show_name = true;
+                show_icon = true;
+                tap_action.action = "toggle";
+                entity = "switch.switch_7";
+                grid_options = {
+                  columns = 3;
+                  rows = 2;
+                };
+              }
+              {
+                type = "button";
+                name = "Miner";
+                icon = "mdi:currency-btc";
+                show_name = true;
+                show_icon = true;
+                tap_action.action = "toggle";
+                entity = "switch.switch_8";
+                grid_options = {
+                  columns = 3;
+                  rows = 2;
+                };
+              }
+            ];
+          }
+          {
+            type = "grid";
+            cards = [
+              {
+                type = "heading";
                 heading = "Weather";
                 heading_style = "title";
               }
@@ -53,32 +208,14 @@
                 features = [ { type = "climate-hvac-modes"; } ];
               }
               {
-                type = "custom:more-info-card";
-                entity = "fan.maxxair_control_living_room_fan";
-                title = "MaxxAir Fan";
-              }
-            ];
-          }
-          {
-            type = "grid";
-            cards = [
-              {
                 type = "heading";
-                heading = "Switches";
+                heading = "Fan";
                 heading_style = "title";
               }
               {
-                type = "entities";
-                entities = [
-                  "switch.switch_1"
-                  "switch.switch_2"
-                  "switch.switch_3"
-                  "switch.switch_4"
-                  "switch.switch_5"
-                  "switch.switch_6"
-                  "switch.switch_7"
-                  "switch.switch_8"
-                ];
+                type = "custom:more-info-card";
+                entity = "fan.maxxair_control_living_room_fan";
+                title = "MaxxAir Fan";
               }
             ];
           }
