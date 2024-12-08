@@ -204,6 +204,14 @@
                 badges = [
                   {
                     type = "entity";
+                    entity = "sensor.humidity_sensor_rooftop_humidity";
+                  }
+                  {
+                    type = "entity";
+                    entity = "sensor.humidity_sensor_rooftop_temperature";
+                  }
+                  {
+                    type = "entity";
                     entity = "sensor.dimmy_dimmy_temperature";
                   }
                   {
