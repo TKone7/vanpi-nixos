@@ -9,6 +9,7 @@
       ./components/home-assistant
       ./components/owntracks
       ./components/nodered
+      ./components/adguard
 
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
