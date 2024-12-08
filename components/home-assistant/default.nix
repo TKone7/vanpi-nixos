@@ -50,6 +50,7 @@ in
       "history"
       "recorder"
       "forecast_solar"
+      "adguard"
     ];
     config = {
       mobile_app = {};

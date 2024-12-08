@@ -15,6 +15,16 @@
         badges = [
           {
             type = "entity";
+            name = "AdGuard";
+            entity = "switch.adguard_home_protection";
+            tap_action.action = "toggle";
+            color = "green";
+            show_name = "true";
+            show_state = "true";
+            show_icon = "true";
+          }
+          {
+            type = "entity";
             entity = "sensor.asus_ai2202_battery_level";
           }
         ];
