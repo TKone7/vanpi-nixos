@@ -11,6 +11,7 @@ in
     ./heater
     ./mempool
     ./ns-panel
+    ./voice
   ];
 
   home-manager.users."${user}" = {
@@ -51,6 +52,10 @@ in
       "recorder"
       "forecast_solar"
       "adguard"
+      "spotify"
+      "cast"
+      "wyoming"
+      "whisper"
     ];
     config = {
       mobile_app = {};
