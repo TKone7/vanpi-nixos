@@ -74,6 +74,64 @@ in
       owntracks = {
         mqtt_topic = "owntracks/#";
       };
+      mqtt = {
+        sensor = [
+          {
+            name = "Alby Hub Pi CPU Temperature";
+            state_topic = "albyhub/cpu_temp";
+            unit_of_measurement = "°C";
+            device_class = "temperature";
+          }
+          {
+            name = "Ective BMS 2 Counter";
+            state_topic = "connector/device/FC45C3BDEDBF";
+            unit_of_measurement = "Cycles";
+            value_template = "{{ value_json.cycles }}";
+          }
+          {
+            name = "Ective BMS 2 SOC";
+            state_topic = "connector/device/FC45C3BDEDBF";
+            unit_of_measurement = "%";
+            value_template = "{{ value_json.soc | round(1) }}";
+          }
+          {
+            name = "Ective BMS 2 Current";
+            state_topic = "connector/device/FC45C3BDEDBF";
+            unit_of_measurement = "A";
+            value_template = "{{ value_json.current | round(1) }}";
+          }
+          {
+            name = "Ective BMS 2 Volt";
+            state_topic = "connector/device/FC45C3BDEDBF";
+            unit_of_measurement = "V";
+            value_template = "{{ value_json.volt | round(1) }}";
+          }
+          {
+            name = "Ective BMS 1 Counter";
+            state_topic = "connector/device/30554437B179";
+            unit_of_measurement = "Cycles";
+            value_template = "{{ value_json.cycles }}";
+          }
+          {
+            name = "Ective BMS 1 SOC";
+            state_topic = "connector/device/30554437B179";
+            unit_of_measurement = "%";
+            value_template = "{{ value_json.soc | round(1) }}";
+          }
+          {
+            name = "Ective BMS 1 Current";
+            state_topic = "connector/device/30554437B179";
+            unit_of_measurement = "A";
+            value_template = "{{ value_json.current | round(1) }}";
+          }
+          {
+            name = "Ective BMS 1 Volt";
+            state_topic = "connector/device/30554437B179";
+            unit_of_measurement = "V";
+            value_template = "{{ value_json.volt | round(1) }}";
+          }
+        ];
+      };
       "automation manual" = [
         {
           alias = "update ha location every hour";
