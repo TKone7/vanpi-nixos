@@ -4,4 +4,6 @@
 - Enable Owntracks integration via UI
 - Add Forecas (`met`) manually
 - Add ZHA Zigbee coordinator
+- Adding AdGuard server
+- Adding Spotify integration
 
