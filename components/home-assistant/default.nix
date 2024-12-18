@@ -158,6 +158,71 @@ in
             }
           ];
         };
+        open_grey_water_valve = {
+          sequence = [
+            {
+              action = "script.turn_off";
+              target.entity_id = "script.close_grey_water_valve";
+            }
+            {
+              action = "switch.turn_on";
+              target.entity_id = [ "switch.switch_1" ];
+            }
+            {
+              action = "switch.turn_off";
+              target.entity_id = [ "switch.switch_2" ];
+            }
+            {
+              delay.seconds = 30;
+            }
+            {
+              action = "switch.turn_off";
+              target.entity_id = [ "switch.switch_1" ];
+            }
+          ];
+        };
+        close_grey_water_valve = {
+          sequence = [
+            {
+              action = "script.turn_off";
+              target.entity_id = "script.open_grey_water_valve";
+            }
+            {
+              action = "switch.turn_on";
+              target.entity_id = [ "switch.switch_2" ];
+            }
+            {
+              action = "switch.turn_off";
+              target.entity_id = [ "switch.switch_1" ];
+            }
+            {
+              delay.seconds = 30;
+            }
+            {
+              action = "switch.turn_off";
+              target.entity_id = [ "switch.switch_2" ];
+            }
+          ];
+        };
+        stop_grey_water_valve = {
+          sequence = [
+            {
+              action = "script.turn_off";
+              target.entity_id = [
+                "script.open_grey_water_valve"
+                "script.close_grey_water_valve"
+              ];
+            }
+            {
+              action = "switch.turn_off";
+              target.entity_id = [ "switch.switch_1" ];
+            }
+            {
+              action = "switch.turn_off";
+              target.entity_id = [ "switch.switch_2" ];
+            }
+          ];
+        };
       };
       light = [
         {
