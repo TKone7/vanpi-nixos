@@ -17,6 +17,43 @@
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
+  virtualisation = {
+    docker.enable = true;
+    oci-containers = {
+      backend = "docker";
+      containers = {
+        vanpi-battery-one = {
+          image = "tkone7/ective-bms";
+          environment = {
+            DEVICE_MAC = "30:55:44:37:B1:79";
+            MQTT_HOST = "localhost";
+            MQTT_PORT = "1883";
+          };
+          autoStart = true;
+          extraOptions = [
+            "--net=host"
+          ];
+        };
+        vanpi-battery-two = {
+          image = "tkone7/ective-bms";
+          environment = {
+            DEVICE_MAC = "FC:45:C3:BD:ED:BF";
+            MQTT_HOST = "localhost";
+            MQTT_PORT = "1883";
+          };
+          autoStart = true;
+          extraOptions = [
+            "--net=host"
+          ];
+        };
+      };
+    };
+  };
+
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+
+
   home-manager.users.admin = import ./home.nix;
 
   # Use the extlinux boot loader. (NixOS wants to enable GRUB by default)
