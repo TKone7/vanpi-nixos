@@ -31,7 +31,7 @@ in
       WorkingDirectory = "/";
       ExecStartPre = "${pkgs.coreutils-full}/bin/sleep 3";
       User      = user;
-      ExecStart = "${pkgs.owntracks-recorder}/bin/ot-recorder --doc-root ${userDir}/recorder/htdocs --viewsdir ${userDir}/recorder/htdocs/views --initialize owntracks/#";
+      ExecStart = "${pkgs.owntracks-recorder}/bin/ot-recorder --doc-root ${userDir}/recorder/htdocs --viewsdir ${userDir}/recorder/htdocs/views owntracks/#";
     };
     wantedBy = [ "multi-user.target" ];
   };
