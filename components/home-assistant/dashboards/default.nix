@@ -1,7 +1,8 @@
 { pkgs, ... }:
 {
   imports = [
-    ./test.nix
+    ./drive.nix
+    ./bitcoin.nix
   ];
 
   services.home-assistant = {
@@ -10,6 +11,7 @@
     ];
     lovelaceConfig = {
       title = "My Awesome Van";
+      show_in_sidebar = true;
       views = [{
         title = "Home";
         badges = [
@@ -25,7 +27,11 @@
           }
           {
             type = "entity";
-            entity = "sensor.asus_ai2202_battery_level";
+            entity = "fan.maxxair_control_living_room_fan";
+          }
+          {
+            type = "entity";
+            entity = "climate.van_thermostat";
           }
         ];
         sections = [
@@ -77,45 +83,6 @@
                 type = "heading";
                 heading = "Switches";
                 heading_style = "title";
-              }
-              {
-                type = "button";
-                name = "Open walve";
-                icon = "mdi:water-check";
-                show_name = true;
-                show_icon = true;
-                tap_action.action = "toggle";
-                entity = "switch.switch_1";
-                grid_options = {
-                  columns = 3;
-                  rows = 2;
-                };
-              }
-              {
-                type = "button";
-                name = "Close walve";
-                icon = "mdi:water-off-outline";
-                show_name = true;
-                show_icon = true;
-                tap_action.action = "toggle";
-                entity = "switch.switch_2";
-                grid_options = {
-                  columns = 3;
-                  rows = 2;
-                };
-              }
-              {
-                type = "button";
-                name = "Underground camera";
-                icon = "mdi:webcam";
-                show_name = true;
-                show_icon = true;
-                tap_action.action = "toggle";
-                entity = "switch.switch_3";
-                grid_options = {
-                  columns = 3;
-                  rows = 2;
-                };
               }
               {
                 type = "button";
@@ -182,6 +149,45 @@
                   rows = 2;
                 };
               }
+              {
+                type = "button";
+                name = "Open valve";
+                icon = "mdi:water-check";
+                show_name = true;
+                show_icon = true;
+                tap_action.action = "toggle";
+                entity = "switch.switch_1";
+                grid_options = {
+                  columns = 3;
+                  rows = 2;
+                };
+              }
+              {
+                type = "button";
+                name = "Close valve";
+                icon = "mdi:water-off-outline";
+                show_name = true;
+                show_icon = true;
+                tap_action.action = "toggle";
+                entity = "switch.switch_2";
+                grid_options = {
+                  columns = 3;
+                  rows = 2;
+                };
+              }
+              {
+                type = "button";
+                name = "Underground camera";
+                icon = "mdi:webcam";
+                show_name = true;
+                show_icon = true;
+                tap_action.action = "toggle";
+                entity = "switch.switch_3";
+                grid_options = {
+                  columns = 3;
+                  rows = 2;
+                };
+              }
             ];
           }
           {
@@ -204,20 +210,23 @@
                 badges = [
                   {
                     type = "entity";
-                    entity = "sensor.humidity_sensor_rooftop_humidity";
-                  }
-                  {
-                    type = "entity";
-                    entity = "sensor.humidity_sensor_rooftop_temperature";
-                  }
-                  {
-                    type = "entity";
                     entity = "sensor.dimmy_dimmy_temperature";
                   }
                   {
                     type = "entity";
                     entity = "sensor.ns_panel_temperature";
                   }
+                ];
+              }
+              {
+                type = "glance";
+                show_name = false;
+                show_icon = true;
+                show_state = true;
+                entities = [
+                  { entity = "sensor.humidity_sensor_rooftop_temperature"; }
+                  { entity = "sensor.humidity_sensor_rooftop_humidity"; }
+                  { entity = "sensor.humidity_sensor_dew_point"; }
                 ];
               }
               {
