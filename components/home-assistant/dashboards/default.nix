@@ -251,7 +251,7 @@
             cards = [
               {
                 type = "heading";
-                heading = "Resources";
+                heading = "Water levels";
                 heading_style = "title";
               }
               {
@@ -279,6 +279,73 @@
                   green = 0;
                   yellow = 70;
                   red = 90;
+                };
+              }
+              {
+                type = "heading";
+                heading = "Battery";
+                heading_style = "title";
+              }
+              {
+                type = "gauge";
+                entity = "sensor.ective_bms_1_current";
+                name = "BMS 1 Current";
+                unit = "A";
+                needle = true;
+                min = -80;
+                max = 200;
+                grid_options = {
+                  columns = 6;
+                  rows = "auto";
+                };
+                severity = {
+                  green = 0;
+                  yellow = 100;
+                  red = 180;
+                };
+              }
+              {
+                type = "gauge";
+                entity = "sensor.ective_bms_2_current";
+                name = "BMS 2 Current";
+                unit = "A";
+                needle = true;
+                min = -80;
+                max = 200;
+                grid_options = {
+                  columns = 6;
+                  rows = "auto";
+                };
+                severity = {
+                  green = 0;
+                  yellow = 100;
+                  red = 180;
+                };
+              }
+              {
+                type = "gauge";
+                entity = "sensor.ective_bms_1_soc";
+                name = "BMS 1 SOC";
+                unit = "%";
+                needle = true;
+                min = 0;
+                max = 100;
+                grid_options = {
+                  columns = 6;
+                  rows = "auto";
+                };
+              }
+              {
+                type = "gauge";
+                entity = "sensor.ective_bms_2_soc";
+                name = "BMS 2 SOC";
+                unit = "%";
+                needle = true;
+                min = 0;
+                max = 100;
+                grid_options = {
+                  columns = 6;
+                  rows = "auto";
                 };
               }
             ];
