@@ -155,6 +155,25 @@ in
             action = "script.update_ha_location";
           };
         }
+        {
+          alias = "Turn off pump and fan when driving";
+          trigger = {
+            platform = "zone";
+            entity_id = "device_tracker.vanpi_rudy";
+            zone = "zone.home";
+            event = "leave";
+          };
+          actions = [
+            {
+              action = "switch.turn_off";
+              target.entity_id = "switch.switch_6"; # water pump
+            }
+            {
+              action = "fan.turn_off";
+              target.entity_id = "fan.maxxair_control_living_room_fan";
+            }
+          ];
+        }
       ];
       script = {
         update_ha_location = {
