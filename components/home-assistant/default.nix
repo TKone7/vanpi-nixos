@@ -56,8 +56,11 @@ in
       "cast"
       "wyoming"
       "whisper"
+      "piper"
+      "media_source"
     ];
     config = {
+      media_source = {};
       mobile_app = {};
       history = {};
       homeassistant = {
