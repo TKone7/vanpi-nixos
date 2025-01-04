@@ -1,4 +1,4 @@
-{ pkgs, ... }: 
+{ pkgs, pkgs-unstable,... }: 
 let
   user = "hass";
   group = "hass";
@@ -26,6 +26,9 @@ in
 
   services.home-assistant = {
     enable = true;
+    package = pkgs-unstable.home-assistant.overrideAttrs (oldAttrs: {
+      doInstallCheck = false;
+    });
     openFirewall = true;
     extraPackages = python3Packages: with python3Packages; [
       # postgresql support
@@ -36,7 +39,7 @@ in
     ];
     customComponents = with pkgs.home-assistant-custom-components; [
       gpio
-      (pkgs.callPackage ../../packages/mcp23017.nix {})
+      (pkgs-unstable.callPackage ../../packages/mcp23017.nix {})
     ];
     extraComponents = [
       "default_config"
