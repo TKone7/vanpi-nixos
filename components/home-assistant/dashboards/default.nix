@@ -207,26 +207,27 @@
                 type = "heading";
                 heading = "Climate";
                 heading_style = "title";
-                badges = [
-                  {
-                    type = "entity";
-                    entity = "sensor.dimmy_dimmy_temperature";
-                  }
-                  {
-                    type = "entity";
-                    entity = "sensor.ns_panel_temperature";
-                  }
-                ];
+                # badges = [
+                #   {
+                #     type = "entity";
+                #     entity = "sensor.dimmy_dimmy_temperature";
+                #   }
+                #   {
+                #     type = "entity";
+                #     entity = "sensor.ns_panel_temperature";
+                #   }
+                # ];
               }
               {
                 type = "glance";
-                show_name = false;
+                show_name = true;
                 show_icon = true;
                 show_state = true;
                 entities = [
-                  { entity = "sensor.humidity_sensor_rooftop_temperature"; }
-                  { entity = "sensor.humidity_sensor_rooftop_humidity"; }
-                  { entity = "sensor.humidity_sensor_dew_point"; }
+                  { entity = "sensor.dimmy_dimmy_temperature"; name = "Entrance"; }
+                  { entity = "sensor.ns_panel_temperature"; name = "Kitchen"; }
+                  { entity = "sensor.temperature_hub_indoor"; name = "Garage"; }
+                  { entity = "sensor.temperature_hub_outdoor"; name = "Outdoor"; }
                 ];
               }
               {
