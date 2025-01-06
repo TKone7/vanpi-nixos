@@ -308,6 +308,21 @@ in
         enable = true;
         port = 3000;
       };
+      devices = {
+        "0x6cfd22fffe1c7f2b" = {
+          friendly_name = "vallhorn_wireless_motion_sensor";
+          no_occupancy_since = [ 10 60 3600 ];
+        };
+        "0xecf64cfffe4a9962" = {
+          friendly_name = "badring_water_leakage_sensor";
+        };
+        "0xd44867fffeb35475" = {
+          friendly_name = "parasoll_door_sensor";
+        };
+        "0x001788010d352db8" = {
+          friendly_name = "philips_dial_switch";
+        };
+      };
     };
   };
 }
