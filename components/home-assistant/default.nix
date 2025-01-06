@@ -50,7 +50,6 @@ in
       "script"
       "automation"
       "lovelace"
-      "zha"
       "history"
       "recorder"
       "forecast_solar"
@@ -294,6 +293,20 @@ in
         #  ];
         #}
       ];
+    };
+  };
+  services.zigbee2mqtt = {
+    enable = true;
+    settings = {
+      homeassistant = true;
+      permit_join = true;
+      serial = {
+        port = "/dev/serial/by-id/usb-ITEAD_SONOFF_Zigbee_3.0_USB_Dongle_Plus_V2_20221101110646-if00";
+      };
+      frontend = {
+        enable = true;
+        port = 3000;
+      };
     };
   };
 }

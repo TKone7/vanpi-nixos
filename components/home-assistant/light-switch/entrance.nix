@@ -1,5 +1,5 @@
 let
-  deviceId = "e87c4ba0a961aa2aa7492c843a4808a0";
+  deviceId = "9768eccf13894abd7fa8ec7586cf2c79";
 in
 {
   services.home-assistant.config = {
@@ -9,10 +9,10 @@ in
         triggers = [
           {
             trigger = "device";
-            domain = "zha";
+            domain = "mqtt";
             device_id = deviceId;
-            subtype = "button_1";
-            type = "remote_button_short_press";
+            subtype = "button_1_press_release";
+            type = "action";
           }
         ];
         actions = [
@@ -27,10 +27,10 @@ in
         triggers = [
           {
             trigger = "device";
-            domain = "zha";
+            domain = "mqtt";
             device_id = deviceId;
-            subtype = "button_1";
-            type = "remote_button_long_press";
+            subtype = "button_1_hold_release";
+            type = "action";
           }
         ];
         actions = [
@@ -45,10 +45,10 @@ in
         triggers = [
           {
             trigger = "device";
-            domain = "zha";
+            domain = "mqtt";
             device_id = deviceId;
-            subtype = "button_2";
-            type = "remote_button_short_press";
+            subtype = "button_2_press_release";
+            type = "action";
           }
         ];
         actions = [
@@ -76,10 +76,10 @@ in
         triggers = [
           {
             trigger = "device";
-            domain = "zha";
+            domain = "mqtt";
             device_id = deviceId;
-            subtype = "dim_up";
-            type = "remote_button_short_press";
+            subtype = "brightness_step_up";
+            type = "action";
           }
         ];
         actions = [
@@ -95,10 +95,10 @@ in
         triggers = [
           {
             trigger = "device";
-            domain = "zha";
+            domain = "mqtt";
             device_id = deviceId;
-            subtype = "dim_down";
-            type = "remote_button_short_press";
+            subtype = "brightness_step_down";
+            type = "action";
           }
         ];
         actions = [
