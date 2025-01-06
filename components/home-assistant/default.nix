@@ -12,6 +12,7 @@ in
     ./mempool
     ./ns-panel
     ./voice
+    ./starlink
   ];
 
   home-manager.users."${user}" = {
