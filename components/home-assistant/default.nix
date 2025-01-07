@@ -13,6 +13,7 @@ in
     ./ns-panel
     ./voice
     ./starlink
+    ./switches
   ];
 
   home-manager.users."${user}" = {
@@ -267,33 +268,6 @@ in
           ];
         }
       ];
-      switch = [
-        {
-          platform = "mcp23017";
-          i2c_address = 32; # TODO this is actually the hex address "0x20". maybe there is a way to convert in Nix lang
-          pins = {
-            "8" = "switch_1";
-            "9" = "switch_2";
-            "10" = "switch_3";
-            "11" = "switch_4";
-            "12" = "switch_5";
-            "13" = "switch_6";
-            "14" = "switch_7";
-            "15" = "switch_8";
-          };
-        }
-        #{
-        #  platform = "gpio";
-        #  switches = [
-        #    { port = 10; name = "Demo Switch 10"; unique_id = "demo_switch_port_10"; invert_logic = true; }
-        #    { port = 27; name = "Demo Switch 27"; unique_id = "demo_switch_port_27"; invert_logic = true; }
-        #    { port = 17; name = "Demo Switch 17"; unique_id = "demo_switch_port_17"; invert_logic = true; }
-        #    { port = 9; name = "Demo Switch 9"; unique_id = "demo_switch_port_9"; invert_logic = true; }
-        #    { port = 11; name = "Demo Switch 11"; unique_id = "demo_switch_port_11"; invert_logic = true; }
-        #    { port = 5; name = "Demo Switch 5"; unique_id = "demo_switch_port_5"; invert_logic = true; }
-        #  ];
-        #}
-      ];
     };
   };
   services.zigbee2mqtt = {
@@ -321,6 +295,9 @@ in
         };
         "0x001788010d352db8" = {
           friendly_name = "philips_dial_switch";
+        };
+        "0xd87a3bfffe4d1ff6" = {
+          friendly_name = "tradfri_switch";
         };
       };
     };
