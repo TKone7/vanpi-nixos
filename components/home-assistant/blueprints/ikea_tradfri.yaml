@@ -1,0 +1,165 @@
+blueprint:
+  name: 'Z2M IKEA On Off and dimming Lights'
+  description: Blueprint for Ikea Remote Controls (On/Off and dim) for controlling lights
+  domain: automation
+  source_url: https://community.home-assistant.io/t/z2m-ikea-tradfri-dimmer-switch-on-off-and-dimming/516972
+  input:
+    remote:
+      name: Remote
+      description: IKEA remote to use (e.g sensor.kitchen_remote_action)
+      selector:
+        entity:
+          domain: sensor
+          multiple: false
+          
+    lights:
+      name: Lights
+      description: Light(s) to control when using default light actions
+      default:
+        entity_id: none
+      selector:
+        entity:
+          domain: light
+         
+    helper_transition_switch:
+      name: Helper - Transition time in seconds for switching on / off
+      description: Transition time in seconds for switching on / off (0.0-10.0)
+      default: 1
+      selector:
+        number:
+          min: 0.0
+          max: 10.0
+          mode: box
+          step: 0.5   
+    helper_step_up:
+      name: Helper - brightness up step
+      description: Step size for changing brightness up (0-20)
+      default: 5
+      selector:
+        number:
+          min: 0
+          max: 20
+          mode: box
+          step: 1
+    helper_step_down:
+      name: Helper - brightness down step
+      description: Step size for changing brightness down (0-20)
+      default: -5
+      selector:
+        number:
+          min: -20
+          max: 0
+          mode: box
+          step: 1
+    helper_transition_dim:
+      name: Helper - Transition time for dimming up / down
+      description: Transition time in seconds for dimming up / down. 0 makes visible steps. Greater than 0.1 makes it smoother. (0.0-10.0)
+      default: 0.5
+      selector:
+        number:
+          min: 0.0
+          max: 10.0
+          mode: box
+          step: 0.5
+    helper_pause:
+      name: Helper - pause between each dimming step
+      description: How long should be delayed between each step of dimming in milliseconds. 0 makes no delay. (10-2000)
+      default: 500
+      selector:
+        number:
+          min: 10
+          max: 2000
+          mode: box
+          step: 10
+
+mode: restart
+max_exceeded: silent
+variables:
+  helper_transition_switch: !input helper_transition_switch
+  helper_step_up: !input helper_step_up
+  helper_step_down: !input helper_step_down
+  helper_transition_dim: !input helper_transition_dim
+  helper_pause: !input helper_pause
+trigger:
+  - platform: state
+    entity_id:
+      - !input remote
+    to: "on"
+    id: "on"
+  - platform: state
+    entity_id:
+      - !input remote
+    to: "off"
+    id: "off"
+  - platform: state
+    entity_id:
+      - !input remote
+    to: brightness_move_up
+    id: move_up
+  - platform: state
+    entity_id:
+      - !input remote
+    to: brightness_move_down
+    id: move_down
+  - platform: state
+    entity_id:
+      - !input remote
+    to: brightness_stop
+    id: stop
+
+action:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id: "on"
+        sequence:
+          - service: light.turn_on
+            data:
+              transition: !input helper_transition_switch
+            target: 
+              entity_id: !input lights
+      - conditions:
+          - condition: trigger
+            id: "off"
+        sequence:
+          - service: light.turn_off
+            data:
+              transition: !input helper_transition_switch
+            target: 
+              entity_id: !input lights
+      - conditions:
+          - condition: trigger
+            id: move_up
+        sequence:
+          - repeat:
+              count: "20"
+              sequence:
+                - service: light.turn_on
+                  data:
+                    transition: !input helper_transition_dim
+                    brightness_step_pct: !input helper_step_up
+                  target: 
+                    entity_id: !input lights
+                - delay:
+                    hours: 0
+                    minutes: 0
+                    seconds: 0
+                    milliseconds: !input helper_pause
+      - conditions:
+          - condition: trigger
+            id: move_down
+        sequence:
+          - repeat:
+              count: "20"
+              sequence:
+                - service: light.turn_on
+                  data:
+                    transition: !input helper_transition_dim
+                    brightness_step_pct: !input helper_step_down
+                  target: 
+                    entity_id: !input lights
+                - delay:
+                    hours: 0
+                    minutes: 0
+                    seconds: 0
+                    milliseconds: !input helper_pause
