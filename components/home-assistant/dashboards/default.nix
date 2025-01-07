@@ -207,16 +207,6 @@
                 type = "heading";
                 heading = "Climate";
                 heading_style = "title";
-                # badges = [
-                #   {
-                #     type = "entity";
-                #     entity = "sensor.dimmy_dimmy_temperature";
-                #   }
-                #   {
-                #     type = "entity";
-                #     entity = "sensor.ns_panel_temperature";
-                #   }
-                # ];
               }
               {
                 type = "glance";
@@ -234,6 +224,18 @@
                 type = "thermostat";
                 entity = "climate.van_thermostat";
                 features = [ { type = "climate-hvac-modes"; } ];
+              }
+              {
+
+                type = "entities";
+                entities = [
+                  {
+                    entity =  "number.dieselheizung_leistung";
+                    name =  "Leistung";
+                    icon =  "mdi:heat-wave";
+                    secondary_info =  "none";
+                  }
+                ];
               }
               {
                 type = "heading";
