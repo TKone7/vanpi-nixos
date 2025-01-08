@@ -144,6 +144,8 @@ in
           }
         ];
       };
+      # ensure that UI generated automations are also saved
+      "automation ui" = "!include automations.yaml";
       "automation manual" = [
         {
           alias = "update ha location every hour";
