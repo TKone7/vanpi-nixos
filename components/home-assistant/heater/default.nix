@@ -9,6 +9,13 @@ in
         icon = "mdi:home-thermometer";
       };
     };
+    template = [{
+      binary_sensor = [{
+        # if the target temperature is almost reached (<0.5C) we reduce the heater power (see automations)
+        name = "low_power_mode";
+        state = "{{ (state_attr('climate.van_thermostat', 'current_temperature') | float) >= (state_attr('climate.van_thermostat', 'temperature') | float - 0.5 ) }}";
+      }];
+    }];
     climate = [{
       platform = "generic_thermostat";
       name = "Van thermostat";
@@ -81,14 +88,58 @@ in
             type = "select_option";
             option = "Wärme + Lüftung";
           }
+        ];
+      }
+      {
+        alias = "Set power level of diesel heater based on temperature difference";
+        mode = "single";
+        triggers = [
           {
-            device_id = device_id;
-            entity_id = "select.dieselheizung_leistung";
-            domain = "select";
-            type = "select_option";
-            option = "100%";
+            trigger = "state";
+            entity_id = [ "binary_sensor.low_power_mode" ];
           }
         ];
+        conditions = [];
+        actions = [{
+          choose = [
+            {
+              conditions = [
+                {
+                  condition = "state";
+                  entity_id = "binary_sensor.low_power_mode";
+                  state = "on";
+                }
+              ];
+              sequence = [
+                {
+                  device_id = device_id;
+                  domain = "select";
+                  entity_id = "select.dieselheizung_leistung";
+                  option = "30%";
+                  type = "select_option";
+                }
+              ];
+            }
+            {
+              conditions = [
+                {
+                  condition = "state";
+                  entity_id = "binary_sensor.low_power_mode";
+                  state = "off";
+                }
+              ];
+              sequence = [
+                {
+                  device_id = device_id;
+                  domain = "select";
+                  entity_id = "select.dieselheizung_leistung";
+                  option = "100%";
+                  type = "select_option";
+                }
+              ];
+            }
+          ];
+        }];
       }
       {
         alias = "Warm up in the morning (16C)";
